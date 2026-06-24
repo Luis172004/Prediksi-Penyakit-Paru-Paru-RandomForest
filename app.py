@@ -35,77 +35,55 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-/* Background utama */
 
-.stApp {
+/* Background */
+
+.stApp{
 
 background:
 linear-gradient(
 135deg,
 #f8ffff,
-#e8f8fb
+#eaf7f7
 );
 
 }
 
 
-
 /* Header */
 
-.title {
+.title{
 
-font-size:45px;
-
+font-size:38px;
 font-weight:800;
+color:#168aad;
 
-color:#1b7f8c;
+}
 
-letter-spacing:0.5px;
+
+.subtitle{
+
+font-size:18px;
+color:#607d8b;
 
 }
 
 
 
-.subtitle {
+/* Card */
 
-font-size:19px;
+.card{
 
-color:#6b7c85;
+background:#ffffff;
 
-}
+padding:25px;
 
-
-
-/* Semua card */
-
-.card {
-
-
-background:
-
-rgba(255,255,255,0.85);
-
-
-padding:28px;
-
-
-border-radius:25px;
-
+border-radius:22px;
 
 box-shadow:
+0 8px 25px rgba(22,138,173,0.15);
 
-0px 10px 25px
-rgba(70,150,160,0.18);
-
-
-
-border:
-
-1px solid #d8eff2;
-
-
-backdrop-filter: blur(8px);
-
+border:1px solid #d9eeee;
 
 }
 
@@ -113,23 +91,34 @@ backdrop-filter: blur(8px);
 
 /* Judul card */
 
-.card-title {
+.card-title{
 
 font-size:22px;
 
 font-weight:700;
 
-color:#2b6777;
+color:#168aad;
+
+}
+
+
+/* angka */
+
+.card h2{
+
+color:#0f9d8a;
 
 }
 
 
 
-/* angka */
+/* isi card */
 
-.card h2 {
+.card p{
 
-color:#159895;
+color:#607d8b;
+
+font-size:16px;
 
 }
 
@@ -137,126 +126,11 @@ color:#159895;
 
 /* Info box */
 
-.stAlert {
+.stAlert{
 
-
-background:#eafafa;
+background:#e7f8f5;
 
 border-radius:18px;
-
-border:none;
-
-}
-
-
-
-/* Button */
-
-.stButton button {
-
-
-background:
-
-linear-gradient(
-90deg,
-#55c2c9,
-#1b9aaa
-);
-
-
-color:white;
-
-
-border-radius:30px;
-
-
-height:48px;
-
-
-font-weight:700;
-
-
-border:none;
-
-
-padding-left:35px;
-
-padding-right:35px;
-
-
-}
-
-
-
-/* hover button */
-
-.stButton button:hover {
-
-
-background:
-
-linear-gradient(
-90deg,
-#1b9aaa,
-#087f8c
-);
-
-
-color:white;
-
-
-}
-
-
-
-/* input box */
-
-div[data-baseweb="select"] > div {
-
-
-background:white;
-
-border-radius:15px;
-
-
-border:1px solid #d5eeee;
-
-
-}
-
-
-
-/* Risk rendah */
-
-.risk-low {
-
-
-background:
-
-linear-gradient(
-135deg,
-#f0fff8,
-#e3faf3
-);
-
-
-
-padding:25px;
-
-
-border-radius:25px;
-
-
-border-left:
-
-8px solid #38b000;
-
-
-box-shadow:
-
-0px 8px 20px
-rgba(56,176,0,0.15);
-
 
 color:#276749;
 
@@ -264,60 +138,67 @@ color:#276749;
 
 
 
-/* Risk tinggi */
-
-
-.risk-high {
-
-
-background:
-
-linear-gradient(
-135deg,
-#fff5f5,
-#ffecec
-);
-
-
-
-padding:25px;
-
-
-border-radius:25px;
-
-
-border-left:
-
-8px solid #ff6b6b;
-
-
-box-shadow:
-
-0px 8px 20px
-rgba(255,107,107,0.15);
-
-
-color:#c92a2a;
-
-
-}
-
-
-
 /* Sidebar */
 
-
-section[data-testid="stSidebar"] {
-
+section[data-testid="stSidebar"]{
 
 background:
 
 linear-gradient(
 180deg,
-#eafafa,
+#dff7f3,
 #ffffff
 );
 
+}
+
+
+
+section[data-testid="stSidebar"] *{
+
+color:#276749 !important;
+
+}
+
+
+
+/* Select menu */
+
+div[data-baseweb="select"] > div{
+
+background:white;
+
+border-radius:15px;
+
+border:1px solid #b8e3df;
+
+}
+
+
+
+/* Button */
+
+.stButton button{
+
+background:#16a085;
+
+color:white;
+
+border-radius:25px;
+
+font-weight:bold;
+
+height:45px;
+
+}
+
+
+
+.stButton button:hover{
+
+background:#087f5b;
+
+color:white;
 
 }
 
@@ -325,44 +206,22 @@ linear-gradient(
 
 /* Metric */
 
-
-[data-testid="metric-container"] {
-
+[data-testid="metric-container"]{
 
 background:white;
 
+border-radius:18px;
 
 padding:18px;
 
-
-border-radius:20px;
-
-
 box-shadow:
-
-0px 6px 18px
-rgba(0,150,170,0.12);
-
+0 6px 18px rgba(0,150,170,0.15);
 
 }
 
-
-
-/* Chart */
-
-.stBarChart {
-
-
-background:white;
-
-border-radius:20px;
-
-
-}
 
 
 </style>
-
 """, unsafe_allow_html=True)
 
 # =========================
