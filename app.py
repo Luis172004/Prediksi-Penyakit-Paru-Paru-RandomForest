@@ -28,40 +28,39 @@ st.set_page_config(
 # STYLE TAMPILAN
 # =========================
 
-# =========================
-# STYLE MEDICAL UI
+## =========================
+# STYLE MEDICAL UI FINAL
 # =========================
 
 st.markdown("""
 <style>
 
+/* ===== BACKGROUND ===== */
 
-/* Background */
-
-.stApp{
+.stApp {
 
 background:
 linear-gradient(
 135deg,
 #f8ffff,
-#eaf7f7
+#eaf8f6
 );
 
 }
 
 
-/* Header */
+/* ===== MAIN TITLE ===== */
 
-.title{
+.title {
 
-font-size:38px;
+font-size:42px;
 font-weight:800;
-color:#168aad;
+color:#0f7c7e;
 
 }
 
 
-.subtitle{
+.subtitle {
 
 font-size:18px;
 color:#607d8b;
@@ -69,78 +68,70 @@ color:#607d8b;
 }
 
 
+/* ===== SEMUA TEXT DEFAULT ===== */
 
-/* Card */
+p {
 
-.card{
+color:#4b5563 !important;
+
+}
+
+
+h1,h2,h3,h4,h5 {
+
+color:#0f7c7e !important;
+
+}
+
+
+/* ===== CARD DASHBOARD ===== */
+
+.card {
+
 
 background:#ffffff;
 
+
 padding:25px;
+
 
 border-radius:22px;
 
-box-shadow:
-0 8px 25px rgba(22,138,173,0.15);
 
-border:1px solid #d9eeee;
+border:1px solid #d8eeee;
+
+
+box-shadow:
+
+0px 8px 25px rgba(15,124,126,0.15);
+
 
 }
 
 
 
-/* Judul card */
+.card-title {
 
-.card-title{
+color:#0f7c7e !important;
 
 font-size:22px;
 
 font-weight:700;
 
-color:#168aad;
+}
+
+
+.card h2 {
+
+color:#159895 !important;
 
 }
 
 
-/* angka */
+/* ===== SIDEBAR ===== */
 
-.card h2{
+section[data-testid="stSidebar"] {
 
-color:#0f9d8a;
-
-}
-
-
-
-/* isi card */
-
-.card p{
-
-color:#607d8b;
-
-font-size:16px;
-
-}
-
-
-
-/* Info box */
-
-.stAlert{
-
-background:#e7f8f5;
-
-border-radius:18px;
-
-color:#276749;
-
-}
-
-
-
-/* Sidebar */
-
-section[data-testid="stSidebar"]{
 
 background:
 
@@ -150,78 +141,249 @@ linear-gradient(
 #ffffff
 );
 
-}
-
-
-
-section[data-testid="stSidebar"] *{
-
-color:#276749 !important;
 
 }
 
 
+section[data-testid="stSidebar"] * {
 
-/* Select menu */
+color:#166534 !important;
 
-div[data-baseweb="select"] > div{
-
-background:white;
-
-border-radius:15px;
-
-border:1px solid #b8e3df;
+font-weight:600;
 
 }
 
 
 
-/* Button */
+/* ===== SELECT BOX ===== */
 
-.stButton button{
 
-background:#16a085;
+div[data-baseweb="select"] > div {
 
-color:white;
+
+background:white !important;
+
+
+border-radius:15px !important;
+
+
+border:1px solid #b7e4df !important;
+
+
+}
+
+
+
+div[data-baseweb="select"] span {
+
+
+color:#374151 !important;
+
+
+}
+
+
+
+.stSelectbox label {
+
+
+color:#166534 !important;
+
+
+font-weight:700 !important;
+
+
+}
+
+
+
+/* ===== BUTTON ===== */
+
+
+.stButton button {
+
+
+background:
+
+linear-gradient(
+90deg,
+#20c997,
+#0f9b8e
+);
+
+
+color:white !important;
+
 
 border-radius:25px;
 
-font-weight:bold;
 
 height:45px;
 
+
+font-weight:bold;
+
+
+border:none;
+
+
 }
 
 
 
-.stButton button:hover{
+.stButton button:hover {
+
 
 background:#087f5b;
 
-color:white;
 
 }
 
 
 
-/* Metric */
+/* ===== INFO BOX ===== */
 
-[data-testid="metric-container"]{
 
-background:white;
+.stAlert {
+
+
+background:#e8faf5 !important;
+
 
 border-radius:18px;
 
-padding:18px;
+
+color:#166534 !important;
+
+
+}
+
+
+
+/* ===== METRIC MODEL ===== */
+
+
+[data-testid="metric-container"] {
+
+
+background:white;
+
+
+padding:20px;
+
+
+border-radius:20px;
+
 
 box-shadow:
-0 6px 18px rgba(0,150,170,0.15);
+
+0px 6px 20px rgba(15,124,126,0.12);
+
+
+}
+
+
+
+[data-testid="metric-container"] label {
+
+
+color:#64748b !important;
+
+
+}
+
+
+[data-testid="metric-container"] div {
+
+
+color:#0f7c7e !important;
+
+
+}
+
+
+
+/* ===== RISK RESULT ===== */
+
+
+.risk-low {
+
+
+background:#ecfdf5;
+
+
+padding:25px;
+
+
+border-radius:20px;
+
+
+border-left:8px solid #22c55e;
+
+
+color:#166534 !important;
+
+
+}
+
+
+
+.risk-high {
+
+
+background:#fff1f2;
+
+
+padding:25px;
+
+
+border-radius:20px;
+
+
+border-left:8px solid #ef4444;
+
+
+color:#991b1b !important;
+
+
+}
+
+
+
+/* ===== TABLE / DATA ===== */
+
+
+[data-testid="stDataFrame"] {
+
+
+border-radius:15px;
+
+
+}
+
+
+
+/* ===== CHART AREA ===== */
+
+
+.stBarChart {
+
+
+background:white;
+
+
+border-radius:20px;
+
+
+padding:15px;
+
 
 }
 
 
 
 </style>
+
 """, unsafe_allow_html=True)
 
 # =========================
