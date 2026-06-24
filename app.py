@@ -9,86 +9,147 @@ from sklearn.metrics import (
     accuracy_score,
     precision_score,
     recall_score,
-    f1_score,
-    confusion_matrix
+    f1_score
 )
 
-import matplotlib.pyplot as plt
 
-
-# ==========================
+# =========================
 # KONFIGURASI HALAMAN
-# ==========================
+# =========================
 
 st.set_page_config(
-    page_title="LungCare AI",
+    page_title="Prediksi Penyakit Paru-Paru",
     page_icon="🫁",
     layout="wide"
 )
 
 
-# ==========================
-# STYLE
-# ==========================
+# =========================
+# STYLE TAMPILAN
+# =========================
 
 st.markdown("""
 <style>
 
-.stApp{
-    background-color:#f5f9fc;
+
+.stApp {
+    background-color:#f7fcfb;
 }
 
 
-.title{
-    font-size:42px;
-    font-weight:700;
-    color:#075985;
+/* Judul */
+
+.title {
+
+font-size:42px;
+font-weight:700;
+color:#087f5b;
+
 }
 
 
-.subtitle{
-    color:#555;
-    font-size:18px;
+.subtitle {
+
+font-size:18px;
+color:#5f6f6b;
+
 }
 
 
-.card{
+
+/* Card */
+
+.card {
 
 background:white;
+
 padding:25px;
-border-radius:15px;
-box-shadow:0px 4px 15px #d9e8f5;
+
+border-radius:20px;
+
+box-shadow:
+0px 5px 18px rgba(0,120,100,0.15);
+
+border-left:6px solid #20c997;
 
 }
 
 
-.card-title{
+
+/* Card title */
+
+.card-title {
 
 font-size:22px;
+
 font-weight:bold;
-color:#075985;
+
+color:#087f5b;
 
 }
 
 
-.result-high{
 
-background:#ffe5e5;
-padding:20px;
-border-radius:15px;
-color:#b91c1c;
+/* Hasil risiko */
+
+.risk-high {
+
+background:#fff0f0;
+
+padding:25px;
+
+border-radius:18px;
+
+border-left:8px solid #e03131;
+
+color:#9b2226;
 
 }
 
 
-.result-low{
 
-background:#dcfce7;
-padding:20px;
-border-radius:15px;
+.risk-low {
+
+background:#ecfdf5;
+
+padding:25px;
+
+border-radius:18px;
+
+border-left:8px solid #2f9e44;
+
 color:#166534;
 
 }
+
+
+
+/* Button */
+
+.stButton button {
+
+background-color:#20c997;
+
+color:white;
+
+border-radius:12px;
+
+height:45px;
+
+font-weight:bold;
+
+border:none;
+
+}
+
+
+.stButton button:hover {
+
+background-color:#087f5b;
+
+}
+
+
 
 </style>
 
@@ -96,18 +157,19 @@ color:#166534;
 
 
 
-# ==========================
+# =========================
 # HEADER
-# ==========================
+# =========================
+
 
 st.markdown(
 """
 <div class="title">
-LungCare AI
+Sistem Prediksi Penyakit Paru-Paru
 </div>
 
 <div class="subtitle">
-Sistem Prediksi Risiko Penyakit Paru-Paru Menggunakan Random Forest
+Prediksi risiko kesehatan berbasis Machine Learning menggunakan Random Forest
 </div>
 
 <br>
@@ -117,12 +179,13 @@ unsafe_allow_html=True
 
 
 
-# ==========================
+# =========================
 # SIDEBAR
-# ==========================
+# =========================
+
 
 menu = st.sidebar.selectbox(
-    "Menu",
+    "Menu Aplikasi",
     [
         "Dashboard",
         "Prediksi Pasien",
@@ -132,9 +195,10 @@ menu = st.sidebar.selectbox(
 
 
 
-# ==========================
+# =========================
 # LOAD DATA
-# ==========================
+# =========================
+
 
 df = pd.read_csv(
     "predic_tabel.csv",
@@ -143,78 +207,103 @@ df = pd.read_csv(
 
 
 
-# ==========================
-# DATA PREPROCESSING
-# ==========================
+# =========================
+# MAPPING DATA
+# =========================
+
 
 mapping = {
 
-"Usia":{
+
+"Usia":
+{
 "Muda":0,
 "Tua":1
 },
 
-"Jenis_Kelamin":{
+
+"Jenis_Kelamin":
+{
 "Wanita":0,
 "Pria":1
 },
 
-"Merokok":{
+
+"Merokok":
+{
 "Pasif":0,
 "Aktif":1
 },
 
-"Bekerja":{
+
+"Bekerja":
+{
 "Tidak":0,
 "Ya":1
 },
 
-"Rumah_Tangga":{
+
+"Rumah_Tangga":
+{
 "Tidak":0,
 "Ya":1
 },
 
-"Aktivitas_Begadang":{
+
+"Aktivitas_Begadang":
+{
 "Tidak":0,
 "Ya":1
 },
 
-"Aktivitas_Olahraga":{
+
+"Aktivitas_Olahraga":
+{
 "Jarang":0,
 "Sering":1
 },
 
-"Asuransi":{
+
+"Asuransi":
+{
 "Tidak":0,
 "Ada":1
 },
 
-"Penyakit_Bawaan":{
+
+"Penyakit_Bawaan":
+{
 "Tidak":0,
 "Ada":1
 },
 
-"Hasil":{
+
+"Hasil":
+{
 "Tidak":0,
 "Ya":1
 }
 
+
 }
 
 
-data = df.copy()
+
+data=df.copy()
 
 
-for col, value in mapping.items():
+for kolom, nilai in mapping.items():
 
-    data[col] = (
-        data[col]
+    data[kolom] = (
+        data[kolom]
         .str.strip()
-        .map(value)
+        .map(nilai)
     )
 
 
+
 fitur = [
+
 "Usia",
 "Jenis_Kelamin",
 "Merokok",
@@ -224,55 +313,67 @@ fitur = [
 "Aktivitas_Olahraga",
 "Asuransi",
 "Penyakit_Bawaan"
+
 ]
 
 
-X = data[fitur]
-y = data["Hasil"]
+
+X=data[fitur]
+
+y=data["Hasil"]
 
 
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X,
-    y,
-    test_size=0.2,
-    random_state=42
+X_train,X_test,y_train,y_test = train_test_split(
+
+X,
+y,
+test_size=0.2,
+random_state=42
+
 )
 
 
 
-# ==========================
-# MODEL
-# ==========================
+# =========================
+# MODEL RANDOM FOREST
+# =========================
+
 
 model = RandomForestClassifier(
-    n_estimators=100,
-    max_depth=10,
-    random_state=42
+
+n_estimators=100,
+
+max_depth=10,
+
+random_state=42
+
 )
 
 
 model.fit(
-    X_train,
-    y_train
+X_train,
+y_train
 )
 
 
 
-# ==========================
+# =========================
 # DASHBOARD
-# ==========================
-
-if menu == "Dashboard":
+# =========================
 
 
-    st.subheader("Dashboard")
+if menu=="Dashboard":
+
+
+    st.subheader("Dashboard Sistem")
 
 
     a,b,c = st.columns(3)
 
 
     with a:
+
         st.markdown(
         """
         <div class="card">
@@ -284,7 +385,7 @@ if menu == "Dashboard":
         <h2>30.000+</h2>
 
         Data pasien digunakan
-        untuk training model.
+        untuk pelatihan model.
 
         </div>
         """,
@@ -292,7 +393,9 @@ if menu == "Dashboard":
         )
 
 
+
     with b:
+
         st.markdown(
         """
         <div class="card">
@@ -304,7 +407,7 @@ if menu == "Dashboard":
         <h2>Random Forest</h2>
 
         Metode klasifikasi
-        machine learning.
+        Machine Learning.
 
         </div>
         """,
@@ -314,6 +417,7 @@ if menu == "Dashboard":
 
 
     with c:
+
         st.markdown(
         """
         <div class="card">
@@ -324,7 +428,7 @@ if menu == "Dashboard":
 
         <h2>9 Faktor</h2>
 
-        Digunakan untuk prediksi.
+        Digunakan untuk analisis.
 
         </div>
         """,
@@ -332,90 +436,99 @@ if menu == "Dashboard":
         )
 
 
-    st.write("")
-
     st.info(
-        "LungCare AI membantu melakukan prediksi awal berdasarkan faktor risiko pasien. "
-        "Hasil prediksi bukan pengganti diagnosis dokter."
+        "Aplikasi ini digunakan untuk prediksi awal berdasarkan faktor risiko pasien."
     )
 
 
 
-# ==========================
+# =========================
 # PREDIKSI
-# ==========================
-
-elif menu == "Prediksi Pasien":
+# =========================
 
 
-    st.subheader("Prediksi Risiko Pasien")
+elif menu=="Prediksi Pasien":
+
+
+    st.subheader(
+        "Input Data Pasien"
+    )
 
 
     col1,col2,col3 = st.columns(3)
 
 
+
     with col1:
 
-        usia = st.selectbox(
-            "Usia",
-            ["Muda","Tua"]
+        usia=st.selectbox(
+        "Usia",
+        ["Muda","Tua"]
         )
 
-        gender = st.selectbox(
-            "Jenis Kelamin",
-            ["Wanita","Pria"]
+
+        gender=st.selectbox(
+        "Jenis Kelamin",
+        ["Wanita","Pria"]
         )
 
-        rokok = st.selectbox(
-            "Merokok",
-            ["Pasif","Aktif"]
+
+        rokok=st.selectbox(
+        "Merokok",
+        ["Pasif","Aktif"]
         )
+
 
 
     with col2:
 
-        kerja = st.selectbox(
-            "Bekerja",
-            ["Tidak","Ya"]
+        kerja=st.selectbox(
+        "Bekerja",
+        ["Tidak","Ya"]
         )
 
-        rumah = st.selectbox(
-            "Rumah Tangga",
-            ["Tidak","Ya"]
+
+        rumah=st.selectbox(
+        "Rumah Tangga",
+        ["Tidak","Ya"]
         )
 
-        begadang = st.selectbox(
-            "Begadang",
-            ["Tidak","Ya"]
+
+        begadang=st.selectbox(
+        "Begadang",
+        ["Tidak","Ya"]
         )
+
 
 
     with col3:
 
-        olahraga = st.selectbox(
-            "Olahraga",
-            ["Jarang","Sering"]
+        olahraga=st.selectbox(
+        "Olahraga",
+        ["Jarang","Sering"]
         )
 
-        asuransi = st.selectbox(
-            "Asuransi",
-            ["Tidak","Ada"]
+
+        asuransi=st.selectbox(
+        "Asuransi",
+        ["Tidak","Ada"]
         )
 
-        bawaan = st.selectbox(
-            "Penyakit Bawaan",
-            ["Tidak","Ada"]
+
+        bawaan=st.selectbox(
+        "Penyakit Bawaan",
+        ["Tidak","Ada"]
         )
 
 
 
     if st.button(
-        "Analisis Risiko",
-        use_container_width=True
+        "Analisis Risiko"
     ):
 
 
-        input_data = np.array([[
+        input_data=np.array([[
+
 
         mapping["Usia"][usia],
         mapping["Jenis_Kelamin"][gender],
@@ -427,115 +540,130 @@ elif menu == "Prediksi Pasien":
         mapping["Asuransi"][asuransi],
         mapping["Penyakit_Bawaan"][bawaan]
 
+
         ]])
 
 
-        probability = model.predict_proba(
-            input_data
+        risiko=model.predict_proba(
+        input_data
         )[0][1]
 
 
+
         st.write(
-        f"Tingkat Risiko: {probability*100:.2f}%"
+        f"Tingkat Risiko: {risiko*100:.2f}%"
         )
 
 
         st.progress(
-            float(probability)
+        float(risiko)
         )
 
 
-        if probability >= 0.5:
+
+        if risiko >=0.5:
+
 
             st.markdown(
             """
-            <div class="result-high">
+            <div class="risk-high">
 
             <h2>Risiko Tinggi</h2>
 
-            Hasil prediksi menunjukkan adanya kemungkinan
-            risiko penyakit paru-paru.
+            Model mendeteksi kemungkinan risiko
+            penyakit paru-paru.
 
             </div>
+
             """,
             unsafe_allow_html=True
             )
+
 
 
         else:
 
+
             st.markdown(
             """
-            <div class="result-low">
+            <div class="risk-low">
 
             <h2>Risiko Rendah</h2>
 
-            Hasil prediksi menunjukkan risiko lebih rendah
-            berdasarkan data yang dimasukkan.
+            Hasil menunjukkan risiko lebih rendah
+            berdasarkan data pasien.
 
             </div>
+
             """,
             unsafe_allow_html=True
             )
 
 
 
-# ==========================
+# =========================
 # ANALISIS MODEL
-# ==========================
+# =========================
+
 
 else:
 
 
-    st.subheader("Evaluasi Model")
+    st.subheader(
+    "Evaluasi Model"
+    )
 
 
-    pred = model.predict(X_test)
+    pred=model.predict(X_test)
 
 
-    a,b,c,d = st.columns(4)
+
+    a,b,c,d=st.columns(4)
 
 
     a.metric(
-        "Accuracy",
-        round(
-            accuracy_score(y_test,pred),
-            3
-        )
+    "Accuracy",
+    round(
+    accuracy_score(y_test,pred),
+    3
+    )
     )
 
 
     b.metric(
-        "Precision",
-        round(
-            precision_score(y_test,pred),
-            3
-        )
+    "Precision",
+    round(
+    precision_score(y_test,pred),
+    3
+    )
     )
 
 
     c.metric(
-        "Recall",
-        round(
-            recall_score(y_test,pred),
-            3
-        )
+    "Recall",
+    round(
+    recall_score(y_test,pred),
+    3
+    )
     )
 
 
     d.metric(
-        "F1 Score",
-        round(
-            f1_score(y_test,pred),
-            3
-        )
+    "F1 Score",
+    round(
+    f1_score(y_test,pred),
+    3
+    )
     )
 
 
-    st.subheader("Faktor Risiko")
+
+    st.subheader(
+    "Faktor Risiko Utama"
+    )
 
 
-    importance = pd.DataFrame({
+    importance=pd.DataFrame({
 
     "Faktor":fitur,
 
@@ -544,17 +672,12 @@ else:
     })
 
 
-    importance = importance.sort_values(
-        "Nilai",
-        ascending=False
-    )
-
-
     st.bar_chart(
-        importance.set_index("Faktor")
+    importance.set_index("Faktor")
     )
+
 
 
 st.caption(
-"LungCare AI - Machine Learning Project"
+"Project Machine Learning - Random Forest"
 )
