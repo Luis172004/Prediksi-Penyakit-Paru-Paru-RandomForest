@@ -28,97 +28,123 @@ st.set_page_config(
 # STYLE TAMPILAN
 # =========================
 
+# =========================
+# STYLE MEDICAL UI
+# =========================
+
 st.markdown("""
 <style>
 
+/* Background utama */
 
 .stApp {
-    background-color:#f7fcfb;
+
+background:
+linear-gradient(
+135deg,
+#f8ffff,
+#e8f8fb
+);
+
 }
 
 
-/* Judul */
+
+/* Header */
 
 .title {
 
-font-size:42px;
-font-weight:700;
-color:#087f5b;
+font-size:45px;
+
+font-weight:800;
+
+color:#1b7f8c;
+
+letter-spacing:0.5px;
 
 }
+
 
 
 .subtitle {
 
-font-size:18px;
-color:#5f6f6b;
+font-size:19px;
+
+color:#6b7c85;
 
 }
 
 
 
-/* Card */
+/* Semua card */
 
 .card {
 
-background:white;
 
-padding:25px;
+background:
 
-border-radius:20px;
+rgba(255,255,255,0.85);
+
+
+padding:28px;
+
+
+border-radius:25px;
+
 
 box-shadow:
-0px 5px 18px rgba(0,120,100,0.15);
 
-border-left:6px solid #20c997;
+0px 10px 25px
+rgba(70,150,160,0.18);
+
+
+
+border:
+
+1px solid #d8eff2;
+
+
+backdrop-filter: blur(8px);
+
 
 }
 
 
 
-/* Card title */
+/* Judul card */
 
 .card-title {
 
 font-size:22px;
 
-font-weight:bold;
+font-weight:700;
 
-color:#087f5b;
-
-}
-
-
-
-/* Hasil risiko */
-
-.risk-high {
-
-background:#fff0f0;
-
-padding:25px;
-
-border-radius:18px;
-
-border-left:8px solid #e03131;
-
-color:#9b2226;
+color:#2b6777;
 
 }
 
 
 
-.risk-low {
+/* angka */
 
-background:#ecfdf5;
+.card h2 {
 
-padding:25px;
+color:#159895;
+
+}
+
+
+
+/* Info box */
+
+.stAlert {
+
+
+background:#eafafa;
 
 border-radius:18px;
 
-border-left:8px solid #2f9e44;
-
-color:#166534;
+border:none;
 
 }
 
@@ -128,39 +154,220 @@ color:#166534;
 
 .stButton button {
 
-background-color:#20c997;
+
+background:
+
+linear-gradient(
+90deg,
+#55c2c9,
+#1b9aaa
+);
+
 
 color:white;
 
-border-radius:12px;
 
-height:45px;
+border-radius:30px;
 
-font-weight:bold;
+
+height:48px;
+
+
+font-weight:700;
+
 
 border:none;
 
+
+padding-left:35px;
+
+padding-right:35px;
+
+
 }
 
+
+
+/* hover button */
 
 .stButton button:hover {
 
-background-color:#087f5b;
+
+background:
+
+linear-gradient(
+90deg,
+#1b9aaa,
+#087f8c
+);
+
+
+color:white;
+
 
 }
 
+
+
+/* input box */
+
+div[data-baseweb="select"] > div {
+
+
+background:white;
+
+border-radius:15px;
+
+
+border:1px solid #d5eeee;
+
+
+}
+
+
+
+/* Risk rendah */
+
+.risk-low {
+
+
+background:
+
+linear-gradient(
+135deg,
+#f0fff8,
+#e3faf3
+);
+
+
+
+padding:25px;
+
+
+border-radius:25px;
+
+
+border-left:
+
+8px solid #38b000;
+
+
+box-shadow:
+
+0px 8px 20px
+rgba(56,176,0,0.15);
+
+
+color:#276749;
+
+}
+
+
+
+/* Risk tinggi */
+
+
+.risk-high {
+
+
+background:
+
+linear-gradient(
+135deg,
+#fff5f5,
+#ffecec
+);
+
+
+
+padding:25px;
+
+
+border-radius:25px;
+
+
+border-left:
+
+8px solid #ff6b6b;
+
+
+box-shadow:
+
+0px 8px 20px
+rgba(255,107,107,0.15);
+
+
+color:#c92a2a;
+
+
+}
+
+
+
+/* Sidebar */
+
+
+section[data-testid="stSidebar"] {
+
+
+background:
+
+linear-gradient(
+180deg,
+#eafafa,
+#ffffff
+);
+
+
+}
+
+
+
+/* Metric */
+
+
+[data-testid="metric-container"] {
+
+
+background:white;
+
+
+padding:18px;
+
+
+border-radius:20px;
+
+
+box-shadow:
+
+0px 6px 18px
+rgba(0,150,170,0.12);
+
+
+}
+
+
+
+/* Chart */
+
+.stBarChart {
+
+
+background:white;
+
+border-radius:20px;
+
+
+}
 
 
 </style>
 
 """, unsafe_allow_html=True)
 
-
-
 # =========================
 # HEADER
 # =========================
-
 
 st.markdown(
 """
@@ -169,10 +376,11 @@ Sistem Prediksi Penyakit Paru-Paru
 </div>
 
 <div class="subtitle">
-Prediksi risiko kesehatan berbasis Machine Learning menggunakan Random Forest
+Analisis risiko kesehatan menggunakan Machine Learning Random Forest
 </div>
 
 <br>
+
 """,
 unsafe_allow_html=True
 )
