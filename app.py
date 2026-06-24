@@ -16,86 +16,125 @@ from sklearn.metrics import (
 import matplotlib.pyplot as plt
 
 
-# ==============================
-# SETTING HALAMAN
-# ==============================
+# ==========================
+# KONFIGURASI HALAMAN
+# ==========================
 
 st.set_page_config(
-    page_title="Prediksi Penyakit Paru-Paru",
+    page_title="LungCare AI",
     page_icon="🫁",
     layout="wide"
 )
 
 
-# ==============================
-# STYLE TAMPILAN
-# ==============================
+# ==========================
+# STYLE
+# ==========================
 
 st.markdown("""
 <style>
 
-body {
-    background-color: #f4fbff;
+.stApp{
+    background-color:#f5f9fc;
 }
 
 
-.main-title {
-    font-size: 40px;
-    font-weight: bold;
-    color: #0077b6;
+.title{
+    font-size:42px;
+    font-weight:700;
+    color:#075985;
 }
 
 
-.card {
-    background-color: #0f4c75;
-    padding: 25px;
-    border-radius: 18px;
-    color: white;
-    height: 180px;
-    box-shadow: 0px 5px 15px #bcdff5;
+.subtitle{
+    color:#555;
+    font-size:18px;
 }
 
 
-.card h2 {
-    color: #90e0ef;
+.card{
+
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0px 4px 15px #d9e8f5;
+
 }
 
 
-.result {
-    font-size: 30px;
-    font-weight: bold;
+.card-title{
+
+font-size:22px;
+font-weight:bold;
+color:#075985;
+
 }
 
+
+.result-high{
+
+background:#ffe5e5;
+padding:20px;
+border-radius:15px;
+color:#b91c1c;
+
+}
+
+
+.result-low{
+
+background:#dcfce7;
+padding:20px;
+border-radius:15px;
+color:#166534;
+
+}
 
 </style>
+
 """, unsafe_allow_html=True)
 
 
 
-# ==============================
-# JUDUL
-# ==============================
+# ==========================
+# HEADER
+# ==========================
 
 st.markdown(
 """
-<div class="main-title">
-🫁 Prediksi Risiko Penyakit Paru-Paru
+<div class="title">
+LungCare AI
 </div>
 
-<p>
-Sistem deteksi awal menggunakan Machine Learning
-dengan algoritma Random Forest.
-</p>
+<div class="subtitle">
+Sistem Prediksi Risiko Penyakit Paru-Paru Menggunakan Random Forest
+</div>
 
+<br>
 """,
 unsafe_allow_html=True
 )
 
 
 
-# ==============================
+# ==========================
+# SIDEBAR
+# ==========================
+
+menu = st.sidebar.selectbox(
+    "Menu",
+    [
+        "Dashboard",
+        "Prediksi Pasien",
+        "Analisis Model"
+    ]
+)
+
+
+
+# ==========================
 # LOAD DATA
-# ==============================
+# ==========================
 
 df = pd.read_csv(
     "predic_tabel.csv",
@@ -104,138 +143,75 @@ df = pd.read_csv(
 
 
 
-# ==============================
-# DASHBOARD CARD
-# ==============================
-
-col1, col2, col3 = st.columns(3)
-
-
-with col1:
-    st.markdown("""
-    <div class="card">
-    <h2>① Input Form</h2>
-    <p>
-    Input 9 faktor risiko pasien
-    seperti usia, merokok, dan aktivitas.
-    </p>
-    </div>
-    """, unsafe_allow_html=True)
-
-
-with col2:
-    st.markdown("""
-    <div class="card">
-    <h2>② Prediction</h2>
-    <p>
-    Random Forest memberikan prediksi
-    secara langsung.
-    </p>
-    </div>
-    """, unsafe_allow_html=True)
-
-
-
-with col3:
-    st.markdown("""
-    <div class="card">
-    <h2>③ Probabilitas</h2>
-    <p>
-    Menampilkan nilai kemungkinan
-    risiko penyakit.
-    </p>
-    </div>
-    """, unsafe_allow_html=True)
-
-
-
-st.write("")
-
-
-
-# ==============================
-# PREPROCESSING DATA
-# ==============================
-
+# ==========================
+# DATA PREPROCESSING
+# ==========================
 
 mapping = {
 
-"Usia":
-{
+"Usia":{
 "Muda":0,
 "Tua":1
 },
 
-"Jenis_Kelamin":
-{
+"Jenis_Kelamin":{
 "Wanita":0,
 "Pria":1
 },
 
-"Merokok":
-{
+"Merokok":{
 "Pasif":0,
 "Aktif":1
 },
 
-"Bekerja":
-{
+"Bekerja":{
 "Tidak":0,
 "Ya":1
 },
 
-"Rumah_Tangga":
-{
+"Rumah_Tangga":{
 "Tidak":0,
 "Ya":1
 },
 
-"Aktivitas_Begadang":
-{
+"Aktivitas_Begadang":{
 "Tidak":0,
 "Ya":1
 },
 
-"Aktivitas_Olahraga":
-{
+"Aktivitas_Olahraga":{
 "Jarang":0,
 "Sering":1
 },
 
-"Asuransi":
-{
+"Asuransi":{
 "Tidak":0,
 "Ada":1
 },
 
-"Penyakit_Bawaan":
-{
+"Penyakit_Bawaan":{
 "Tidak":0,
 "Ada":1
 },
 
-"Hasil":
-{
+"Hasil":{
 "Tidak":0,
 "Ya":1
 }
 
 }
-
 
 
 data = df.copy()
 
 
+for col, value in mapping.items():
 
-for kolom, nilai in mapping.items():
-
-    data[kolom] = (
-        data[kolom]
+    data[col] = (
+        data[col]
         .str.strip()
-        .map(nilai)
+        .map(value)
     )
-
 
 
 fitur = [
@@ -251,9 +227,7 @@ fitur = [
 ]
 
 
-
 X = data[fitur]
-
 y = data["Hasil"]
 
 
@@ -267,16 +241,14 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 
 
-# ==============================
+# ==========================
 # MODEL
-# ==============================
+# ==========================
 
 model = RandomForestClassifier(
-
     n_estimators=100,
     max_depth=10,
     random_state=42
-
 )
 
 
@@ -287,65 +259,99 @@ model.fit(
 
 
 
-# ==============================
-# SIDEBAR
-# ==============================
-
-
-menu = st.sidebar.selectbox(
-    "Menu",
-    [
-        "Dashboard",
-        "Prediksi Pasien",
-        "Evaluasi Model"
-    ]
-)
-
-
-
-# ==============================
+# ==========================
 # DASHBOARD
-# ==============================
-
+# ==========================
 
 if menu == "Dashboard":
 
-    st.subheader("📊 Informasi Model")
+
+    st.subheader("Dashboard")
+
 
     a,b,c = st.columns(3)
 
-    a.metric(
-        "Jumlah Data",
-        len(df)
+
+    with a:
+        st.markdown(
+        """
+        <div class="card">
+
+        <div class="card-title">
+        Dataset
+        </div>
+
+        <h2>30.000+</h2>
+
+        Data pasien digunakan
+        untuk training model.
+
+        </div>
+        """,
+        unsafe_allow_html=True
+        )
+
+
+    with b:
+        st.markdown(
+        """
+        <div class="card">
+
+        <div class="card-title">
+        Algoritma
+        </div>
+
+        <h2>Random Forest</h2>
+
+        Metode klasifikasi
+        machine learning.
+
+        </div>
+        """,
+        unsafe_allow_html=True
+        )
+
+
+
+    with c:
+        st.markdown(
+        """
+        <div class="card">
+
+        <div class="card-title">
+        Faktor Risiko
+        </div>
+
+        <h2>9 Faktor</h2>
+
+        Digunakan untuk prediksi.
+
+        </div>
+        """,
+        unsafe_allow_html=True
+        )
+
+
+    st.write("")
+
+    st.info(
+        "LungCare AI membantu melakukan prediksi awal berdasarkan faktor risiko pasien. "
+        "Hasil prediksi bukan pengganti diagnosis dokter."
     )
 
-    b.metric(
-        "Algoritma",
-        "Random Forest"
-    )
-
-    c.metric(
-        "Fitur",
-        "9 Faktor Risiko"
-    )
 
 
-
-# ==============================
+# ==========================
 # PREDIKSI
-# ==============================
-
+# ==========================
 
 elif menu == "Prediksi Pasien":
 
 
-    st.subheader(
-        "📝 Input Data Pasien"
-    )
+    st.subheader("Prediksi Risiko Pasien")
 
 
     col1,col2,col3 = st.columns(3)
-
 
 
     with col1:
@@ -355,18 +361,15 @@ elif menu == "Prediksi Pasien":
             ["Muda","Tua"]
         )
 
-
         gender = st.selectbox(
             "Jenis Kelamin",
             ["Wanita","Pria"]
         )
 
-
         rokok = st.selectbox(
             "Merokok",
             ["Pasif","Aktif"]
         )
-
 
 
     with col2:
@@ -376,18 +379,15 @@ elif menu == "Prediksi Pasien":
             ["Tidak","Ya"]
         )
 
-
         rumah = st.selectbox(
             "Rumah Tangga",
             ["Tidak","Ya"]
         )
 
-
         begadang = st.selectbox(
             "Begadang",
             ["Tidak","Ya"]
         )
-
 
 
     with col3:
@@ -397,12 +397,10 @@ elif menu == "Prediksi Pasien":
             ["Jarang","Sering"]
         )
 
-
         asuransi = st.selectbox(
             "Asuransi",
             ["Tidak","Ada"]
         )
-
 
         bawaan = st.selectbox(
             "Penyakit Bawaan",
@@ -412,7 +410,7 @@ elif menu == "Prediksi Pasien":
 
 
     if st.button(
-        "🔍 Mulai Prediksi",
+        "Analisis Risiko",
         use_container_width=True
     ):
 
@@ -432,139 +430,131 @@ elif menu == "Prediksi Pasien":
         ]])
 
 
-        peluang = model.predict_proba(
+        probability = model.predict_proba(
             input_data
         )[0][1]
 
 
-        if peluang >= 0.5:
-
-            st.error(
-            "🔴 Risiko Tinggi Penyakit Paru-Paru"
-            )
-
-        else:
-
-            st.success(
-            "🟢 Risiko Rendah Penyakit Paru-Paru"
-            )
-
-
         st.write(
-        f"Probabilitas Risiko: {peluang*100:.2f}%"
+        f"Tingkat Risiko: {probability*100:.2f}%"
         )
 
 
         st.progress(
-            float(peluang)
+            float(probability)
         )
 
 
+        if probability >= 0.5:
 
-# ==============================
-# EVALUASI MODEL
-# ==============================
+            st.markdown(
+            """
+            <div class="result-high">
 
+            <h2>Risiko Tinggi</h2>
+
+            Hasil prediksi menunjukkan adanya kemungkinan
+            risiko penyakit paru-paru.
+
+            </div>
+            """,
+            unsafe_allow_html=True
+            )
+
+
+        else:
+
+            st.markdown(
+            """
+            <div class="result-low">
+
+            <h2>Risiko Rendah</h2>
+
+            Hasil prediksi menunjukkan risiko lebih rendah
+            berdasarkan data yang dimasukkan.
+
+            </div>
+            """,
+            unsafe_allow_html=True
+            )
+
+
+
+# ==========================
+# ANALISIS MODEL
+# ==========================
 
 else:
 
-    st.subheader(
-        "📈 Evaluasi Model"
-    )
+
+    st.subheader("Evaluasi Model")
 
 
-    prediksi = model.predict(X_test)
+    pred = model.predict(X_test)
 
 
-    col1,col2,col3,col4 = st.columns(4)
+    a,b,c,d = st.columns(4)
 
 
-    col1.metric(
+    a.metric(
         "Accuracy",
         round(
-            accuracy_score(y_test,prediksi),
-            2
+            accuracy_score(y_test,pred),
+            3
         )
     )
 
 
-    col2.metric(
+    b.metric(
         "Precision",
         round(
-            precision_score(y_test,prediksi),
-            2
+            precision_score(y_test,pred),
+            3
         )
     )
 
 
-    col3.metric(
+    c.metric(
         "Recall",
         round(
-            recall_score(y_test,prediksi),
-            2
+            recall_score(y_test,pred),
+            3
         )
     )
 
 
-    col4.metric(
+    d.metric(
         "F1 Score",
         round(
-            f1_score(y_test,prediksi),
-            2
+            f1_score(y_test,pred),
+            3
         )
     )
 
 
-
-    st.subheader(
-        "📊 Feature Importance"
-    )
+    st.subheader("Faktor Risiko")
 
 
-    hasil_fitur = pd.DataFrame({
+    importance = pd.DataFrame({
 
-        "Faktor":
-        fitur,
+    "Faktor":fitur,
 
-        "Nilai":
-        model.feature_importances_
+    "Nilai":model.feature_importances_
 
     })
 
 
+    importance = importance.sort_values(
+        "Nilai",
+        ascending=False
+    )
+
+
     st.bar_chart(
-        hasil_fitur.set_index("Faktor")
+        importance.set_index("Faktor")
     )
-
-
-    st.subheader(
-        "Confusion Matrix"
-    )
-
-
-    cm = confusion_matrix(
-        y_test,
-        prediksi
-    )
-
-
-    fig, ax = plt.subplots()
-
-    ax.imshow(cm)
-
-    ax.set_xlabel(
-        "Prediksi"
-    )
-
-    ax.set_ylabel(
-        "Aktual"
-    )
-
-
-    st.pyplot(fig)
-
 
 
 st.caption(
-"Machine Learning Project - Random Forest"
+"LungCare AI - Machine Learning Project"
 )
