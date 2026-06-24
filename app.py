@@ -13,9 +13,9 @@ from sklearn.metrics import (
 )
 
 
-# =========================
-# KONFIGURASI HALAMAN
-# =========================
+# ======================
+# CONFIG
+# ======================
 
 st.set_page_config(
     page_title="Prediksi Penyakit Paru-Paru",
@@ -24,495 +24,179 @@ st.set_page_config(
 )
 
 
-# =========================
-# STYLE TAMPILAN
-# =========================
+# ======================
+# STYLE
+# ======================
 
 st.markdown("""
 <style>
 
 
-/* =========================
-   BACKGROUND
-========================= */
+.stApp{
+background:linear-gradient(
+135deg,#f8ffff,#eaf8f6);
+}
 
-.stApp {
 
-    background:
-    linear-gradient(
-    135deg,
-    #f8ffff,
-    #eaf8f6
-    );
+.title{
+font-size:42px;
+font-weight:800;
+color:#0f7c7e;
+}
+
+
+.subtitle{
+font-size:18px;
+color:#64748b;
+}
+
+
+
+.card{
+
+background:white;
+
+padding:25px;
+
+border-radius:22px;
+
+box-shadow:
+0px 8px 25px rgba(15,124,126,0.15);
+
+border:1px solid #d8eeee;
+
+}
+
+
+.card-title{
+
+font-size:22px;
+
+font-weight:bold;
+
+color:#0f7c7e;
 
 }
 
 
 
-/* =========================
-   JUDUL
-========================= */
+p{
 
-.title {
+color:#475569 !important;
 
-    font-size:42px;
+}
 
-    font-weight:800;
 
-    color:#0f7c7e;
+h1,h2,h3{
+
+color:#0f7c7e !important;
 
 }
 
 
 
-.subtitle {
+/* sidebar */
 
-    font-size:18px;
+section[data-testid="stSidebar"]{
 
-    color:#64748b;
+background:#e8f8f5;
+
+}
+
+
+section[data-testid="stSidebar"] *{
+
+color:#166534 !important;
 
 }
 
 
 
+/* select */
 
-/* =========================
-   TEXT UMUM
-========================= */
+div[data-baseweb="select"] > div{
 
+background:white !important;
 
-p {
-
-    color:#475569 !important;
+border-radius:15px !important;
 
 }
 
 
-h1,h2,h3,h4,h5 {
+div[data-baseweb="select"] *{
 
-    color:#0f7c7e !important;
-
-}
-
-
-
-
-/* =========================
-   SIDEBAR
-========================= */
-
-
-section[data-testid="stSidebar"] {
-
-
-    background:
-
-    linear-gradient(
-    180deg,
-    #dff7f3,
-    #ffffff
-    );
+color:#334155 !important;
 
 }
 
 
 
-section[data-testid="stSidebar"] * {
+/* button */
 
-    color:#166534 !important;
+.stButton button{
 
-}
+background:#16a085;
 
+color:white !important;
 
+border-radius:25px;
 
+font-weight:bold;
 
-/* =========================
-   CARD DASHBOARD
-========================= */
-
-
-.card {
-
-
-    background:#ffffff;
-
-
-    padding:25px;
-
-
-    border-radius:22px;
-
-
-    border:1px solid #d6eeee;
-
-
-    box-shadow:
-
-    0px 8px 25px
-    rgba(15,124,126,0.15);
-
+height:45px;
 
 }
 
 
 
-.card-title {
+.stButton button:hover{
 
-
-    color:#0f7c7e !important;
-
-
-    font-size:22px;
-
-
-    font-weight:700;
-
+background:#087f5b;
 
 }
 
 
 
-.card h2 {
+/* risk */
 
+.risk-low{
 
-    color:#159895 !important;
+background:#ecfdf5;
 
+padding:25px;
 
-}
+border-radius:20px;
 
-
-
-/* isi card */
-
-.card p {
-
-    color:#64748b !important;
+border-left:8px solid #22c55e;
 
 }
 
 
 
-/* =========================
-   INPUT SELECTBOX
-========================= */
+.risk-high{
 
+background:#fff1f2;
 
-/* kotak dropdown */
+padding:25px;
 
-div[data-baseweb="select"] > div {
+border-radius:20px;
 
-
-    background:white !important;
-
-
-    border-radius:15px !important;
-
-
-    border:1px solid #b7e4df !important;
-
+border-left:8px solid #ef4444;
 
 }
-
-
-
-/* teks pilihan */
-
-div[data-baseweb="select"] span {
-
-
-    color:#334155 !important;
-
-
-    opacity:1 !important;
-
-
-}
-
-
-
-/* semua isi dropdown */
-
-div[data-baseweb="select"] * {
-
-
-    color:#334155 !important;
-
-
-    opacity:1 !important;
-
-
-}
-
-
-
-/* icon panah */
-
-div[data-baseweb="select"] svg {
-
-
-    fill:#0f7c7e !important;
-
-
-}
-
-
-
-/* pilihan saat dropdown dibuka */
-
-div[role="option"] {
-
-
-    background:white !important;
-
-
-    color:#334155 !important;
-
-
-}
-
-
-
-/* label */
-
-.stSelectbox label {
-
-
-    color:#334155 !important;
-
-
-    font-weight:600 !important;
-
-
-}
-
-
-
-
-/* =========================
-   BUTTON
-========================= */
-
-
-.stButton button {
-
-
-    background:
-
-    linear-gradient(
-    90deg,
-    #20c997,
-    #0f9b8e
-    );
-
-
-    color:white !important;
-
-
-    border-radius:30px;
-
-
-    height:45px;
-
-
-    font-weight:bold;
-
-
-    border:none;
-
-
-}
-
-
-
-.stButton button:hover {
-
-
-    background:#087f5b;
-
-
-    color:white !important;
-
-
-}
-
-
-
-
-/* =========================
-   INFO BOX
-========================= */
-
-
-.stAlert {
-
-
-    background:#e8faf5 !important;
-
-
-    border-radius:18px;
-
-
-}
-
-
-
-.stAlert p {
-
-
-    color:#166534 !important;
-
-
-}
-
-
-
-
-/* =========================
-   METRIC MODEL
-========================= */
-
-
-[data-testid="metric-container"] {
-
-
-    background:white;
-
-
-    padding:20px;
-
-
-    border-radius:20px;
-
-
-    box-shadow:
-
-    0px 6px 20px
-    rgba(15,124,126,0.12);
-
-
-}
-
-
-
-/* angka metric */
-
-[data-testid="metric-container"] div {
-
-
-    color:#0f7c7e !important;
-
-
-}
-
-
-
-/* label metric */
-
-[data-testid="metric-container"] label {
-
-
-    color:#64748b !important;
-
-
-}
-
-
-
-
-/* =========================
-   RISK RESULT
-========================= */
-
-
-.risk-low {
-
-
-    background:#ecfdf5;
-
-
-    padding:25px;
-
-
-    border-radius:20px;
-
-
-    border-left:
-
-    8px solid #22c55e;
-
-
-    color:#166534 !important;
-
-
-}
-
-
-
-.risk-high {
-
-
-    background:#fff1f2;
-
-
-    padding:25px;
-
-
-    border-radius:20px;
-
-
-    border-left:
-
-    8px solid #ef4444;
-
-
-    color:#991b1b !important;
-
-
-}
-
-
-
-
-/* =========================
-   CHART
-========================= */
-
-
-.stBarChart {
-
-
-    background:white;
-
-
-    border-radius:20px;
-
-
-    padding:15px;
-
-
-}
-
-
-
-/* dataframe */
-
-[data-testid="stDataFrame"] {
-
-
-    border-radius:15px;
-
-
-}
-
 
 
 </style>
 
-""", unsafe_allow_html=True)
+""",
+unsafe_allow_html=True)
 
-# =========================
+
+
+# ======================
 # HEADER
-# =========================
+# ======================
+
 
 st.markdown(
 """
@@ -521,24 +205,22 @@ Sistem Prediksi Penyakit Paru-Paru
 </div>
 
 <div class="subtitle">
-Analisis risiko kesehatan menggunakan Machine Learning Random Forest
+Prediksi kesehatan menggunakan Machine Learning Random Forest
 </div>
 
 <br>
-
 """,
 unsafe_allow_html=True
 )
 
 
 
-# =========================
-# SIDEBAR
-# =========================
-
+# ======================
+# MENU
+# ======================
 
 menu = st.sidebar.selectbox(
-    "Menu Aplikasi",
+    "Menu",
     [
         "Dashboard",
         "Prediksi Pasien",
@@ -548,9 +230,9 @@ menu = st.sidebar.selectbox(
 
 
 
-# =========================
-# LOAD DATA
-# =========================
+# ======================
+# DATA
+# ======================
 
 
 df = pd.read_csv(
@@ -560,13 +242,12 @@ df = pd.read_csv(
 
 
 
-# =========================
-# MAPPING DATA
-# =========================
+# ======================
+# ENCODING
+# ======================
 
 
 mapping = {
-
 
 "Usia":
 {
@@ -574,13 +255,11 @@ mapping = {
 "Tua":1
 },
 
-
 "Jenis_Kelamin":
 {
 "Wanita":0,
 "Pria":1
 },
-
 
 "Merokok":
 {
@@ -588,13 +267,11 @@ mapping = {
 "Aktif":1
 },
 
-
 "Bekerja":
 {
 "Tidak":0,
 "Ya":1
 },
-
 
 "Rumah_Tangga":
 {
@@ -602,13 +279,11 @@ mapping = {
 "Ya":1
 },
 
-
 "Aktivitas_Begadang":
 {
 "Tidak":0,
 "Ya":1
 },
-
 
 "Aktivitas_Olahraga":
 {
@@ -616,13 +291,11 @@ mapping = {
 "Sering":1
 },
 
-
 "Asuransi":
 {
 "Tidak":0,
 "Ada":1
 },
-
 
 "Penyakit_Bawaan":
 {
@@ -630,13 +303,11 @@ mapping = {
 "Ada":1
 },
 
-
 "Hasil":
 {
 "Tidak":0,
 "Ya":1
 }
-
 
 }
 
@@ -645,17 +316,17 @@ mapping = {
 data=df.copy()
 
 
-for kolom, nilai in mapping.items():
+for col,value in mapping.items():
 
-    data[kolom] = (
-        data[kolom]
+    data[col]=(
+        data[col]
         .str.strip()
-        .map(nilai)
+        .map(value)
     )
 
 
 
-fitur = [
+fitur=[
 
 "Usia",
 "Jenis_Kelamin",
@@ -670,36 +341,42 @@ fitur = [
 ]
 
 
-
 X=data[fitur]
 
 y=data["Hasil"]
 
 
 
-X_train,X_test,y_train,y_test = train_test_split(
+# ======================
+# TRAIN MODEL
+# SAMA DENGAN ANALISIS
+# ======================
+
+
+X_train,X_test,y_train,y_test=train_test_split(
 
 X,
 y,
+
 test_size=0.2,
-random_state=42
+
+random_state=42,
+
+stratify=y
 
 )
 
 
 
-# =========================
-# MODEL RANDOM FOREST
-# =========================
-
-
-model = RandomForestClassifier(
+model=RandomForestClassifier(
 
 n_estimators=100,
 
 max_depth=10,
 
-random_state=42
+random_state=42,
+
+n_jobs=-1
 
 )
 
@@ -711,18 +388,18 @@ y_train
 
 
 
-# =========================
+# ======================
 # DASHBOARD
-# =========================
+# ======================
 
 
 if menu=="Dashboard":
 
 
-    st.subheader("Dashboard Sistem")
+    st.subheader("Dashboard")
 
 
-    a,b,c = st.columns(3)
+    a,b,c=st.columns(3)
 
 
     with a:
@@ -735,16 +412,14 @@ if menu=="Dashboard":
         Dataset
         </div>
 
-        <h2>30.000+</h2>
+        <h2>30.000 Data</h2>
 
-        Data pasien digunakan
-        untuk pelatihan model.
+        Data pasien untuk training.
 
         </div>
         """,
         unsafe_allow_html=True
         )
-
 
 
     with b:
@@ -759,8 +434,7 @@ if menu=="Dashboard":
 
         <h2>Random Forest</h2>
 
-        Metode klasifikasi
-        Machine Learning.
+        Metode klasifikasi.
 
         </div>
         """,
@@ -781,7 +455,7 @@ if menu=="Dashboard":
 
         <h2>9 Faktor</h2>
 
-        Digunakan untuk analisis.
+        Digunakan untuk prediksi.
 
         </div>
         """,
@@ -789,27 +463,19 @@ if menu=="Dashboard":
         )
 
 
-    st.info(
-        "Aplikasi ini digunakan untuk prediksi awal berdasarkan faktor risiko pasien."
-    )
 
-
-
-# =========================
+# ======================
 # PREDIKSI
-# =========================
+# ======================
 
 
 elif menu=="Prediksi Pasien":
 
 
-    st.subheader(
-        "Input Data Pasien"
-    )
+    st.subheader("Input Data Pasien")
 
 
-    col1,col2,col3 = st.columns(3)
-
+    col1,col2,col3=st.columns(3)
 
 
     with col1:
@@ -832,7 +498,6 @@ elif menu=="Prediksi Pasien":
         )
 
 
-
     with col2:
 
         kerja=st.selectbox(
@@ -851,7 +516,6 @@ elif menu=="Prediksi Pasien":
         "Begadang",
         ["Tidak","Ya"]
         )
-
 
 
     with col3:
@@ -875,13 +539,10 @@ elif menu=="Prediksi Pasien":
 
 
 
-    if st.button(
-        "Analisis Risiko"
-    ):
+    if st.button("Analisis Risiko"):
 
 
         input_data=np.array([[
-
 
         mapping["Usia"][usia],
         mapping["Jenis_Kelamin"][gender],
@@ -893,78 +554,64 @@ elif menu=="Prediksi Pasien":
         mapping["Asuransi"][asuransi],
         mapping["Penyakit_Bawaan"][bawaan]
 
-
         ]])
 
 
-        risiko=model.predict_proba(
-        input_data
-        )[0][1]
+        hasil=model.predict(input_data)[0]
+
+
+        probabilitas=model.predict_proba(input_data)[0]
 
 
 
-        st.write(
-        f"Tingkat Risiko: {risiko*100:.2f}%"
-        )
-
-
-        st.progress(
-        float(risiko)
-        )
-
-
-
-        if risiko >=0.5:
+        if hasil==1:
 
 
             st.markdown(
-            """
+            f"""
             <div class="risk-high">
 
-            <h2>Risiko Tinggi</h2>
+            <h2>Risiko Penyakit Paru-Paru</h2>
 
-            Model mendeteksi kemungkinan risiko
-            penyakit paru-paru.
+            Probabilitas Risiko:
+            {probabilitas[1]*100:.2f}%
+
 
             </div>
-
             """,
             unsafe_allow_html=True
             )
-
 
 
         else:
 
 
             st.markdown(
-            """
+            f"""
             <div class="risk-low">
 
             <h2>Risiko Rendah</h2>
 
-            Hasil menunjukkan risiko lebih rendah
-            berdasarkan data pasien.
+            Probabilitas Risiko:
+            {probabilitas[1]*100:.2f}%
+
 
             </div>
-
             """,
             unsafe_allow_html=True
             )
 
 
 
-# =========================
+# ======================
 # ANALISIS MODEL
-# =========================
+# ======================
 
 
 else:
 
 
-    st.subheader(
-    "Evaluasi Model"
-    )
+    st.subheader("Evaluasi Model")
 
 
     pred=model.predict(X_test)
@@ -978,8 +625,7 @@ else:
     "Accuracy",
     round(
     accuracy_score(y_test,pred),
-    3
-    )
+    3)
     )
 
 
@@ -987,8 +633,7 @@ else:
     "Precision",
     round(
     precision_score(y_test,pred),
-    3
-    )
+    3)
     )
 
 
@@ -996,8 +641,7 @@ else:
     "Recall",
     round(
     recall_score(y_test,pred),
-    3
-    )
+    3)
     )
 
 
@@ -1005,20 +649,18 @@ else:
     "F1 Score",
     round(
     f1_score(y_test,pred),
-    3
+    3)
     )
-    )
-
 
 
     st.subheader(
-    "Faktor Risiko Utama"
+    "Feature Importance"
     )
 
 
     importance=pd.DataFrame({
 
-    "Faktor":fitur,
+    "Fitur":fitur,
 
     "Nilai":model.feature_importances_
 
@@ -1026,7 +668,7 @@ else:
 
 
     st.bar_chart(
-    importance.set_index("Faktor")
+    importance.set_index("Fitur")
     )
 
 
