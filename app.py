@@ -539,10 +539,13 @@ elif menu=="Prediksi Pasien":
 
 
 
-    if st.button("Analisis Risiko"):
+if st.button("Analisis Risiko"):
 
+    # ===========================
+    # Prediksi Random Forest
+    # ===========================
 
-        input_data=np.array([[
+    input_data = np.array([[
 
         mapping["Usia"][usia],
         mapping["Jenis_Kelamin"][gender],
@@ -554,125 +557,94 @@ elif menu=="Prediksi Pasien":
         mapping["Asuransi"][asuransi],
         mapping["Penyakit_Bawaan"][bawaan]
 
-        ]])
+    ]])
 
+    # Prediksi awal dari model
+    probabilitas_awal = model.predict_proba(input_data)[0][1] * 100
 
-        hasil=model.predict(input_data)[0]
+    # ===========================
+    # Penyesuaian Faktor Risiko
+    # ===========================
 
+    risk_score = probabilitas_awal
 
-        probabilitas=model.predict_proba(input_data)[0]
+    # Faktor Risiko Tinggi
+    if usia == "Tua":
+        risk_score += 10
 
+    if rokok == "Aktif":
+        risk_score += 20
 
+    if begadang == "Ya":
+        risk_score += 10
 
-        if hasil==1:
+    if bawaan == "Ada":
+        risk_score += 20
 
+    # Faktor Risiko Sedang
+    if kerja == "Ya":
+        risk_score += 5
 
-            st.markdown(
+    if rumah == "Ya":
+        risk_score += 5
+
+    # Faktor Protektif
+    if olahraga == "Sering":
+        risk_score -= 15
+
+    if asuransi == "Ada":
+        risk_score -= 5
+
+    # Membatasi nilai
+    if risk_score > 100:
+        risk_score = 100
+
+    if risk_score < 0:
+        risk_score = 0
+
+    # Menentukan kategori
+    if risk_score >= 50:
+
+        st.markdown(
             f"""
             <div class="risk-high">
 
-            <h2>Risiko Penyakit Paru-Paru</h2>
+            <h2>⚠ Risiko Tinggi Penyakit Paru-Paru</h2>
 
-            Probabilitas Risiko:
-            {probabilitas[1]*100:.2f}%
+            <hr>
 
+            <b>Probabilitas Awal Model :</b>
+            {probabilitas_awal:.2f}%<br><br>
+
+            <b>Skor Risiko Akhir :</b>
+            <span style="font-size:28px;color:red;">
+            {risk_score:.2f}%
+            </span>
 
             </div>
             """,
             unsafe_allow_html=True
-            )
+        )
 
+    else:
 
-        else:
-
-
-            st.markdown(
+        st.markdown(
             f"""
             <div class="risk-low">
 
-            <h2>Risiko Rendah</h2>
+            <h2>✅ Risiko Rendah Penyakit Paru-Paru</h2>
 
-            Probabilitas Risiko:
-            {probabilitas[1]*100:.2f}%
+            <hr>
 
+            <b>Probabilitas Awal Model :</b>
+            {probabilitas_awal:.2f}%<br><br>
+
+            <b>Skor Risiko Akhir :</b>
+            <span style="font-size:28px;color:green;">
+            {risk_score:.2f}%
+            </span>
 
             </div>
             """,
             unsafe_allow_html=True
-            )
-
-
-
-# ======================
-# ANALISIS MODEL
-# ======================
-
-
-else:
-
-
-    st.subheader("Evaluasi Model")
-
-
-    pred=model.predict(X_test)
-
-
-
-    a,b,c,d=st.columns(4)
-
-
-    a.metric(
-    "Accuracy",
-    round(
-    accuracy_score(y_test,pred),
-    3)
-    )
-
-
-    b.metric(
-    "Precision",
-    round(
-    precision_score(y_test,pred),
-    3)
-    )
-
-
-    c.metric(
-    "Recall",
-    round(
-    recall_score(y_test,pred),
-    3)
-    )
-
-
-    d.metric(
-    "F1 Score",
-    round(
-    f1_score(y_test,pred),
-    3)
-    )
-
-
-    st.subheader(
-    "Feature Importance"
-    )
-
-
-    importance=pd.DataFrame({
-
-    "Fitur":fitur,
-
-    "Nilai":model.feature_importances_
-
-    })
-
-
-    st.bar_chart(
-    importance.set_index("Fitur")
-    )
-
-
-
-st.caption(
-"Project Machine Learning - Random Forest"
-)
+        )
