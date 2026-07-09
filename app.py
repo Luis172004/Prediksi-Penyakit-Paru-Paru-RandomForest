@@ -9,7 +9,7 @@ import joblib
 
 st.set_page_config(
     page_title="Prediksi Penyakit Paru-Paru",
-    page_icon="ðŸ«",
+    page_icon="🫁",
     layout="wide"
 )
 
@@ -159,14 +159,15 @@ def load_artifacts():
 
 model, le_dict = load_artifacts()
 
+# SINKRONISASI: Menggunakan spasi agar cocok dengan output train_v2.py
 fitur = [
     "Usia",
     "Jenis_Kelamin",
     "Merokok",
     "Bekerja",
     "Rumah_Tangga",
-    "Aktivitas_Begadang",
-    "Aktivitas_Olahraga",
+    "Aktivitas Begadang",
+    "Aktivitas Olahraga",
     "Asuransi",
     "Penyakit_Bawaan"
 ]
@@ -225,8 +226,8 @@ if menu == "Dashboard":
 
     st.markdown("<br>", unsafe_allow_html=True)
     st.info(
-        "âš  **Catatan:** pada dataset ini, pola beberapa fitur (mis. Merokok, "
-        "Aktivitas_Olahraga) tidak selalu searah dengan intuisi medis umum. "
+        "⚠️ **Catatan:** pada dataset ini, pola beberapa fitur (mis. Merokok, "
+        "Aktivitas Olahraga) tidak selalu searah dengan intuisi medis umum. "
         "Model memprediksi murni berdasarkan pola statistik data latih, "
         "bukan berdasarkan aturan medis manual."
     )
@@ -250,21 +251,22 @@ elif menu == "Prediksi Pasien":
     with col2:
         kerja = st.selectbox("Bekerja", opsi["Bekerja"])
         rumah = st.selectbox("Rumah Tangga", opsi["Rumah_Tangga"])
-        begadang = st.selectbox("Begadang", opsi["Aktivitas_Begadang"])
+        begadang = st.selectbox("Begadang", opsi["Aktivitas Begadang"])
 
     with col3:
-        olahraga = st.selectbox("Olahraga", opsi["Aktivitas_Olahraga"])
+        olahraga = st.selectbox("Olahraga", opsi["Aktivitas Olahraga"])
         asuransi = st.selectbox("Asuransi", opsi["Asuransi"])
         bawaan = st.selectbox("Penyakit Bawaan", opsi["Penyakit_Bawaan"])
 
+    # SINKRONISASI: Kunci dicocokkan dengan nama fitur ber-spasi
     input_values = {
         "Usia": usia,
         "Jenis_Kelamin": gender,
         "Merokok": rokok,
         "Bekerja": kerja,
         "Rumah_Tangga": rumah,
-        "Aktivitas_Begadang": begadang,
-        "Aktivitas_Olahraga": olahraga,
+        "Aktivitas Begadang": begadang,
+        "Aktivitas Olahraga": olahraga,
         "Asuransi": asuransi,
         "Penyakit_Bawaan": bawaan
     }
@@ -291,7 +293,7 @@ elif menu == "Prediksi Pasien":
             st.markdown(
                 f"""
                 <div class="risk-high">
-                <h2>âš  Prediksi: POSITIF Penyakit Paru-Paru</h2>
+                <h2>⚠️ Prediksi: POSITIF Penyakit Paru-Paru</h2>
                 <hr>
                 <b>Probabilitas Positif Model :</b>
                 <span style="font-size:28px;color:red;">
@@ -305,7 +307,7 @@ elif menu == "Prediksi Pasien":
             st.markdown(
                 f"""
                 <div class="risk-low">
-                <h2>âœ… Prediksi: NEGATIF Penyakit Paru-Paru</h2>
+                <h2>✅ Prediksi: NEGATIF Penyakit Paru-Paru</h2>
                 <hr>
                 <b>Probabilitas Positif Model :</b>
                 <span style="font-size:28px;color:green;">
@@ -318,7 +320,7 @@ elif menu == "Prediksi Pasien":
 
         st.caption(
             "Prediksi ini murni output model Random Forest yang dilatih pada "
-            "predic_tabel.csv (akurasi Â±94,33% pada data uji), tanpa "
+            "predic_tabel.csv (akurasi ±94,33% pada data uji), tanpa "
             "penyesuaian skor manual."
         )
 
@@ -347,6 +349,6 @@ elif menu == "Analisis Model":
 
     st.caption(
         "Prediksi ini murni output model Random Forest yang dilatih pada "
-        "predic_tabel.csv (akurasi Â±94,33% pada data uji), tanpa "
+        "predic_tabel.csv (akurasi ±94,33% pada data uji), tanpa "
         "penyesuaian skor manual."
     )
