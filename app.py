@@ -346,7 +346,7 @@ elif menu == "Analisis Model":
     )
 
     st.caption(
-        "Semakin tinggi nilai importance, semakin besar pengaruh fitur "
-        "tersebut terhadap keputusan model — tanpa menunjukkan arah "
-        "(positif/negatif) hubungannya."
+        "Prediksi ini murni output model Random Forest yang dilatih pada "
+        "predic_tabel.csv (akurasi ±94,33% pada data uji), tanpa "
+        "penyesuaian skor manual."
     )
