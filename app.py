@@ -1,4 +1,4 @@
-import streamlit as st
+﻿import streamlit as st
 import pandas as pd
 import joblib
 
@@ -9,7 +9,7 @@ import joblib
 
 st.set_page_config(
     page_title="Prediksi Penyakit Paru-Paru",
-    page_icon="🫁",
+    page_icon="ðŸ«",
     layout="wide"
 )
 
@@ -153,8 +153,8 @@ menu = st.sidebar.selectbox(
 
 @st.cache_resource
 def load_artifacts():
-    model = joblib.load("model_rf.pkl")
-    le_dict = joblib.load("label_encoders.pkl")
+    model = joblib.load("model_rf_v2.pkl")
+    le_dict = joblib.load("label_encoders_v2.pkl")
     return model, le_dict
 
 model, le_dict = load_artifacts()
@@ -225,7 +225,7 @@ if menu == "Dashboard":
 
     st.markdown("<br>", unsafe_allow_html=True)
     st.info(
-        "⚠ **Catatan:** pada dataset ini, pola beberapa fitur (mis. Merokok, "
+        "âš  **Catatan:** pada dataset ini, pola beberapa fitur (mis. Merokok, "
         "Aktivitas_Olahraga) tidak selalu searah dengan intuisi medis umum. "
         "Model memprediksi murni berdasarkan pola statistik data latih, "
         "bukan berdasarkan aturan medis manual."
@@ -291,7 +291,7 @@ elif menu == "Prediksi Pasien":
             st.markdown(
                 f"""
                 <div class="risk-high">
-                <h2>⚠ Prediksi: POSITIF Penyakit Paru-Paru</h2>
+                <h2>âš  Prediksi: POSITIF Penyakit Paru-Paru</h2>
                 <hr>
                 <b>Probabilitas Positif Model :</b>
                 <span style="font-size:28px;color:red;">
@@ -305,7 +305,7 @@ elif menu == "Prediksi Pasien":
             st.markdown(
                 f"""
                 <div class="risk-low">
-                <h2>✅ Prediksi: NEGATIF Penyakit Paru-Paru</h2>
+                <h2>âœ… Prediksi: NEGATIF Penyakit Paru-Paru</h2>
                 <hr>
                 <b>Probabilitas Positif Model :</b>
                 <span style="font-size:28px;color:green;">
@@ -318,7 +318,7 @@ elif menu == "Prediksi Pasien":
 
         st.caption(
             "Prediksi ini murni output model Random Forest yang dilatih pada "
-            "predic_tabel.csv (akurasi ±94,33% pada data uji), tanpa "
+            "predic_tabel.csv (akurasi Â±94,33% pada data uji), tanpa "
             "penyesuaian skor manual."
         )
 
@@ -347,6 +347,6 @@ elif menu == "Analisis Model":
 
     st.caption(
         "Prediksi ini murni output model Random Forest yang dilatih pada "
-        "predic_tabel.csv (akurasi ±94,33% pada data uji), tanpa "
+        "predic_tabel.csv (akurasi Â±94,33% pada data uji), tanpa "
         "penyesuaian skor manual."
     )
